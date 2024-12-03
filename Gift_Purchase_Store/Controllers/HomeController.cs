@@ -1,6 +1,6 @@
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Gift_Purchase_Store.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Gift_Purchase_Store.Controllers
 {
