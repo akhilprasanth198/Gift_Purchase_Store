@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Gift_Purchase_Store.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gift_Purchase_Store.Controllers
 {
@@ -26,6 +27,8 @@ namespace Gift_Purchase_Store.Controllers
             return View(await products.GetAllAsync());
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> AddEdit(int id)
         {
@@ -47,6 +50,7 @@ namespace Gift_Purchase_Store.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddEdit(Product product, int[] ingredientIds, int catId)
         {
@@ -122,6 +126,9 @@ namespace Gift_Purchase_Store.Controllers
             return RedirectToAction("Index", "Product");
         }
 
+
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
