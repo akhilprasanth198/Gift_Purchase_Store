@@ -1,0 +1,90 @@
+﻿/* Global Styles for Authentication Pages */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Light background */
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+.card {
+    border-radius: 15px;
+    border: none;
+}
+
+.card-header {
+    background-color: #007bff; /* Primary blue */
+    color: #fff;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.card-body {
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-footer {
+    background-color: #f1f1f1;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+/* Input Fields */
+input[type="email"], input[type="password"], select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #ced4da;
+    font-size: 1rem;
+}
+
+    /* Focus Styles */
+    input:focus, select:focus {
+        border-color: #007bff; /* Blue border on focus */
+        outline: none;
+    }
+
+/* Submit Buttons */
+button[type="submit"] {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: #007bff; /* Blue */
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+}
+
+    button[type="submit"]:hover {
+        background-color: #0056b3; /* Darker blue */
+        cursor: pointer;
+    }
+
+/* Links */
+.text-muted {
+    color: #6c757d !important;
+    text-decoration: none;
+}
+
+    .text-muted:hover {
+        text-decoration: underline;
+    }
+
+.text-center {
+    text-align: center;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .card {
+        width: 100%;
+    }
+}

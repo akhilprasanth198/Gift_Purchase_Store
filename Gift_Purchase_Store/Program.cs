@@ -47,7 +47,7 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Ingredient}/{action=Index}/{id?}");
+    pattern: "{controller=Customer}/{action=TypeView}/{id?}");
 app.MapRazorPages();
 
 using(var scope = app.Services.CreateScope())
