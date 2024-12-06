@@ -45,7 +45,7 @@
                     cartCount = model.OrderItems.Sum(product => product.Quantity);
                 }
             }
-            <a class="nav-link position-relative" asp-action="Cart" asp-controller="Order">
+            <a class="nav-link position-relative" asp-action="Cart" asp-controller="Customer">
                 <i class="bi bi-cart2"></i>
                 <span class="position-absolute start-100 translate-middle badge rounded-pill bg-success">
                     @cartCount

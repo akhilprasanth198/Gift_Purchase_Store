@@ -104,7 +104,7 @@ namespace Gift_Purchase_Store.Controllers
             HttpContext.Session.Set("OrderViewModel", model);
 
             // Redirect back to Create to show updated order items
-            return RedirectToAction("Create", model);
+            return RedirectToAction("CreateOrder", model);
         }
 
         [HttpGet]
@@ -117,7 +117,7 @@ namespace Gift_Purchase_Store.Controllers
 
             if (model == null || model.OrderItems.Count == 0)
             {
-                return RedirectToAction("Create");
+                return RedirectToAction("CreateOrder");
             }
 
             return View(model);
@@ -130,7 +130,7 @@ namespace Gift_Purchase_Store.Controllers
             var model = HttpContext.Session.Get<OrderViewModel>("OrderViewModel");
             if (model == null || model.OrderItems.Count == 0)
             {
-                return RedirectToAction("Create");
+                return RedirectToAction("CreateOrder");
             }
 
             // Create a new Order entity
