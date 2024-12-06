@@ -3,10 +3,40 @@
 @inject UserManager<ApplicationUser> UserManager
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var roles = await UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result);
+
+        if (roles.Contains("Admin"))
+        {
+            <!-- Admin-specific links -->
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Ingredient" asp-action="Index">Manage Types</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Product" asp-action="Index">Manage Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Order" asp-action="ViewOrders">View Orders</a>
+            </li>
+        }
+        else if (roles.Contains("Customer"))
+        {
+            <!-- Customer-specific links -->
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Customer" asp-action="TypeView">Types</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Customer" asp-action="Index">Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Customer" asp-action="ViewOrderStatus">Order</a>
+            </li>
+        }
+
+        <!-- Cart and User Links -->
         <li class="nav-item">
-            <!--Determine number of cart items saved in session-->
+            @* Cart item count logic *@
             @{
                 int cartCount = 0;
                 if (Context.Session.Get<OrderViewModel>("OrderViewModel") != null)
@@ -23,22 +53,23 @@
                 </span>
             </a>
         </li>
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <!-- Unauthenticated User Links -->
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
 </ul>

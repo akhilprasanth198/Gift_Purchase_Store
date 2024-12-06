@@ -27,6 +27,8 @@ namespace Gift_Purchase_Store.Controllers
             return View(await products.GetAllAsync());
         }
 
+       
+
 
         [Authorize(Roles = "Admin")]
         [HttpGet]

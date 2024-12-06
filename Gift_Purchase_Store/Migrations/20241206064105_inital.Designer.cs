@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gift_Purchase_Store.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241203083144_intialtry")]
-    partial class intialtry
+    [Migration("20241206064105_inital")]
+    partial class inital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -45,27 +45,27 @@ namespace Gift_Purchase_Store.Migrations
                         new
                         {
                             CategoryId = 1,
-                            Name = "Appetizer"
+                            Name = "Watch"
                         },
                         new
                         {
                             CategoryId = 2,
-                            Name = "Entree"
+                            Name = "Soft Toys"
                         },
                         new
                         {
                             CategoryId = 3,
-                            Name = "Side Dish"
+                            Name = "Eductional Toys"
                         },
                         new
                         {
                             CategoryId = 4,
-                            Name = "Dessert"
+                            Name = "Decoration Items"
                         },
                         new
                         {
                             CategoryId = 5,
-                            Name = "Beverage"
+                            Name = "Hats"
                         });
                 });
 
@@ -89,32 +89,32 @@ namespace Gift_Purchase_Store.Migrations
                         new
                         {
                             IngredientId = 1,
-                            Name = "Beef"
+                            Name = "High-quality plastic"
                         },
                         new
                         {
                             IngredientId = 2,
-                            Name = "Chicken"
+                            Name = "Treated Wood"
                         },
                         new
                         {
                             IngredientId = 3,
-                            Name = "Fish"
+                            Name = "Child-safe"
                         },
                         new
                         {
                             IngredientId = 4,
-                            Name = "Tortilla"
+                            Name = "Stainless steel"
                         },
                         new
                         {
                             IngredientId = 5,
-                            Name = "Lettuce"
+                            Name = "Baloons"
                         },
                         new
                         {
                             IngredientId = 6,
-                            Name = "Tomato"
+                            Name = "Candles"
                         });
                 });
 
@@ -209,31 +209,41 @@ namespace Gift_Purchase_Store.Migrations
                         {
                             ProductId = 1,
                             CategoryId = 2,
-                            Description = "A delicious beef taco",
+                            Description = "Fluffy and cuddly teddy bear made with non-toxic, child-safe materials.",
                             ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Beef Taco",
-                            Price = 2.50m,
-                            Stock = 100
+                            Name = "Teddy Bear Soft Toy",
+                            Price = 699m,
+                            Stock = 13500
                         },
                         new
                         {
                             ProductId = 2,
-                            CategoryId = 2,
-                            Description = "A delicious chicken taco",
+                            CategoryId = 3,
+                            Description = "Brightly colored wooden puzzle to teach children letters and improve motor skills.",
                             ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Chicken Taco",
-                            Price = 1.99m,
-                            Stock = 101
+                            Name = "Wooden Alphabet Puzzle",
+                            Price = 349m,
+                            Stock = 25
                         },
                         new
                         {
                             ProductId = 3,
-                            CategoryId = 2,
-                            Description = "A delicious fish taco",
+                            CategoryId = 4,
+                            Description = " Set of 50 balloons in assorted colors, made from biodegradable latex.",
                             ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Fish Taco",
-                            Price = 3.99m,
-                            Stock = 90
+                            Name = "Party Balloons Set ",
+                            Price = 399m,
+                            Stock = 100
+                        },
+                        new
+                        {
+                            ProductId = 4,
+                            CategoryId = 4,
+                            Description = "High-quality, reusable Happy Birthday banner made from durable paper and foil.",
+                            ImageUrl = "https://via.placeholder.com/150",
+                            Name = "Happy Birthday Banner",
+                            Price = 299m,
+                            Stock = 50
                         });
                 });
 
@@ -255,22 +265,7 @@ namespace Gift_Purchase_Store.Migrations
                         new
                         {
                             ProductId = 1,
-                            IngredientId = 1
-                        },
-                        new
-                        {
-                            ProductId = 1,
-                            IngredientId = 4
-                        },
-                        new
-                        {
-                            ProductId = 1,
-                            IngredientId = 5
-                        },
-                        new
-                        {
-                            ProductId = 1,
-                            IngredientId = 6
+                            IngredientId = 3
                         },
                         new
                         {
@@ -279,18 +274,8 @@ namespace Gift_Purchase_Store.Migrations
                         },
                         new
                         {
-                            ProductId = 2,
-                            IngredientId = 4
-                        },
-                        new
-                        {
-                            ProductId = 2,
+                            ProductId = 3,
                             IngredientId = 5
-                        },
-                        new
-                        {
-                            ProductId = 2,
-                            IngredientId = 6
                         },
                         new
                         {
@@ -299,18 +284,13 @@ namespace Gift_Purchase_Store.Migrations
                         },
                         new
                         {
-                            ProductId = 3,
-                            IngredientId = 4
+                            ProductId = 4,
+                            IngredientId = 1
                         },
                         new
                         {
-                            ProductId = 3,
-                            IngredientId = 5
-                        },
-                        new
-                        {
-                            ProductId = 3,
-                            IngredientId = 6
+                            ProductId = 4,
+                            IngredientId = 3
                         });
                 });
 

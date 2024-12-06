@@ -78,7 +78,7 @@ namespace Gift_Purchase_Store.Data
                 },
                 new Product
                 {
-                    ProductId = 4,
+                    ProductId = 3,
                     Name = "Party Balloons Set ",
                     Description = " Set of 50 balloons in assorted colors, made from biodegradable latex.",
                     Price = 399,
@@ -88,7 +88,7 @@ namespace Gift_Purchase_Store.Data
                 
             new Product
             {
-                ProductId = 5,
+                ProductId = 4,
                 Name = "Happy Birthday Banner",
                 Description = "High-quality, reusable Happy Birthday banner made from durable paper and foil.",
                 Price = 299,
@@ -102,9 +102,8 @@ namespace Gift_Purchase_Store.Data
                 new ProductIngredient { ProductId = 2, IngredientId = 2 },
                 new ProductIngredient { ProductId = 3, IngredientId = 5 },
                 new ProductIngredient { ProductId = 3, IngredientId = 3 },
-                new ProductIngredient { ProductId = 4, IngredientId = 5 },
-                new ProductIngredient { ProductId = 5, IngredientId = 1 },
-                new ProductIngredient { ProductId = 5, IngredientId = 3 }
+                new ProductIngredient { ProductId = 4, IngredientId = 1 },
+                new ProductIngredient { ProductId = 4, IngredientId = 3 }
                 );
         }
     

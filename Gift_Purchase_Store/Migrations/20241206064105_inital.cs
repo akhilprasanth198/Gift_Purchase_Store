@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Gift_Purchase_Store.Migrations
 {
     /// <inheritdoc />
-    public partial class intial : Migration
+    public partial class inital : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -286,11 +286,11 @@ namespace Gift_Purchase_Store.Migrations
                 columns: new[] { "CategoryId", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Appetizer" },
-                    { 2, "Entree" },
-                    { 3, "Side Dish" },
-                    { 4, "Dessert" },
-                    { 5, "Beverage" }
+                    { 1, "Watch" },
+                    { 2, "Soft Toys" },
+                    { 3, "Eductional Toys" },
+                    { 4, "Decoration Items" },
+                    { 5, "Hats" }
                 });
 
             migrationBuilder.InsertData(
@@ -298,12 +298,12 @@ namespace Gift_Purchase_Store.Migrations
                 columns: new[] { "IngredientId", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Beef" },
-                    { 2, "Chicken" },
-                    { 3, "Fish" },
-                    { 4, "Tortilla" },
-                    { 5, "Lettuce" },
-                    { 6, "Tomato" }
+                    { 1, "High-quality plastic" },
+                    { 2, "Treated Wood" },
+                    { 3, "Child-safe" },
+                    { 4, "Stainless steel" },
+                    { 5, "Baloons" },
+                    { 6, "Candles" }
                 });
 
             migrationBuilder.InsertData(
@@ -311,9 +311,10 @@ namespace Gift_Purchase_Store.Migrations
                 columns: new[] { "ProductId", "CategoryId", "Description", "ImageUrl", "Name", "Price", "Stock" },
                 values: new object[,]
                 {
-                    { 1, 2, "A delicious beef taco", "https://via.placeholder.com/150", "Beef Taco", 2.50m, 100 },
-                    { 2, 2, "A delicious chicken taco", "https://via.placeholder.com/150", "Chicken Taco", 1.99m, 101 },
-                    { 3, 2, "A delicious fish taco", "https://via.placeholder.com/150", "Fish Taco", 3.99m, 90 }
+                    { 1, 2, "Fluffy and cuddly teddy bear made with non-toxic, child-safe materials.", "https://via.placeholder.com/150", "Teddy Bear Soft Toy", 699m, 13500 },
+                    { 2, 3, "Brightly colored wooden puzzle to teach children letters and improve motor skills.", "https://via.placeholder.com/150", "Wooden Alphabet Puzzle", 349m, 25 },
+                    { 3, 4, " Set of 50 balloons in assorted colors, made from biodegradable latex.", "https://via.placeholder.com/150", "Party Balloons Set ", 399m, 100 },
+                    { 4, 4, "High-quality, reusable Happy Birthday banner made from durable paper and foil.", "https://via.placeholder.com/150", "Happy Birthday Banner", 299m, 50 }
                 });
 
             migrationBuilder.InsertData(
@@ -321,18 +322,12 @@ namespace Gift_Purchase_Store.Migrations
                 columns: new[] { "IngredientId", "ProductId" },
                 values: new object[,]
                 {
-                    { 1, 1 },
-                    { 4, 1 },
-                    { 5, 1 },
-                    { 6, 1 },
+                    { 3, 1 },
                     { 2, 2 },
-                    { 4, 2 },
-                    { 5, 2 },
-                    { 6, 2 },
                     { 3, 3 },
-                    { 4, 3 },
                     { 5, 3 },
-                    { 6, 3 }
+                    { 1, 4 },
+                    { 3, 4 }
                 });
 
             migrationBuilder.CreateIndex(

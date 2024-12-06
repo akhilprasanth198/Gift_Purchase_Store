@@ -17,14 +17,12 @@ namespace Gift_Purchase_Store.Controllers
         {
             return View(await ingredients.GetAllAsync());
         }
-
-        [Authorize(Roles = "Admin")]
+        
         public async Task<IActionResult> Details(int id)
         {
             return View(await ingredients.GetByIdAsync(id, new QueryOptions<Ingredient>() {Includes="ProductIngredients.Product"}));
         }
 
-        [Authorize(Roles ="Admin")]
 
         //Ingredient/Create
         [HttpGet]
@@ -44,14 +42,12 @@ namespace Gift_Purchase_Store.Controllers
             }
             return View(ingredient);
         }
-        [Authorize(Roles = "Admin")]
         //Ingredient/Delete
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             return View(await ingredients.GetByIdAsync(id, new QueryOptions<Ingredient> { Includes = "ProductIngredients.Product" }));
         }
-        [Authorize(Roles = "Admin")]
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -224,7 +224,7 @@ namespace Gift_Purchase_Store.Migrations
                         },
                         new
                         {
-                            ProductId = 4,
+                            ProductId = 3,
                             CategoryId = 4,
                             Description = " Set of 50 balloons in assorted colors, made from biodegradable latex.",
                             ImageUrl = "https://via.placeholder.com/150",
@@ -234,7 +234,7 @@ namespace Gift_Purchase_Store.Migrations
                         },
                         new
                         {
-                            ProductId = 5,
+                            ProductId = 4,
                             CategoryId = 4,
                             Description = "High-quality, reusable Happy Birthday banner made from durable paper and foil.",
                             ImageUrl = "https://via.placeholder.com/150",
@@ -282,16 +282,11 @@ namespace Gift_Purchase_Store.Migrations
                         new
                         {
                             ProductId = 4,
-                            IngredientId = 5
-                        },
-                        new
-                        {
-                            ProductId = 5,
                             IngredientId = 1
                         },
                         new
                         {
-                            ProductId = 5,
+                            ProductId = 4,
                             IngredientId = 3
                         });
                 });
