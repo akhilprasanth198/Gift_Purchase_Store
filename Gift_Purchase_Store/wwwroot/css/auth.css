@@ -1,90 +1,67 @@
-﻿/* Global Styles for Authentication Pages */
+﻿/* Background */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa; /* Light background */
+    background: linear-gradient(135deg, #ff9a8b, #ff6f61);
     margin: 0;
     padding: 0;
     height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .card {
     border-radius: 15px;
     border: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
 }
 
-.card-header {
-    background-color: #007bff; /* Primary blue */
-    color: #fff;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+.card h2 {
+    font-weight: bold;
 }
 
-.card-body {
-    padding: 2rem;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.card-footer {
-    background-color: #f1f1f1;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-}
-
-/* Input Fields */
-input[type="email"], input[type="password"], select {
-    width: 100%;
+.form-control {
+    border-radius: 10px;
     padding: 0.8rem;
-    margin-bottom: 1.5rem;
-    border-radius: 10px;
-    border: 1px solid #ced4da;
     font-size: 1rem;
+    border: 1px solid #ced4da;
 }
 
-    /* Focus Styles */
-    input:focus, select:focus {
-        border-color: #007bff; /* Blue border on focus */
-        outline: none;
-    }
+.form-control:focus {
+    border-color: #ff6f61; /* Accent color for focus */
+    outline: none;
+    box-shadow: 0 0 4px rgba(255, 111, 97, 0.5);
+}
 
-/* Submit Buttons */
 button[type="submit"] {
-    width: 100%;
-    padding: 1rem;
     border-radius: 10px;
-    background-color: #007bff; /* Blue */
-    color: #fff;
-    border: none;
+    padding: 0.8rem;
     font-size: 1.2rem;
+    transition: all 0.3s ease-in-out;
+    color: #fff;
 }
 
-    button[type="submit"]:hover {
-        background-color: #0056b3; /* Darker blue */
-        cursor: pointer;
-    }
+button[type="submit"].btn-primary {
+    background-color: #ff6f61; /* Gift shop accent */
+    border: none;
+}
 
-/* Links */
+button[type="submit"].btn-primary:hover {
+    background-color: #e65b50; /* Slightly darker */
+    transform: scale(1.02);
+}
+
+button[type="submit"].btn-success {
+    background-color: #28a745; /* Success green */
+    border: none;
+}
+
+button[type="submit"].btn-success:hover {
+    background-color: #218838;
+    transform: scale(1.02);
+}
+
 .text-muted {
     color: #6c757d !important;
-    text-decoration: none;
-}
-
-    .text-muted:hover {
-        text-decoration: underline;
-    }
-
-.text-center {
-    text-align: center;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .card {
-        width: 100%;
-    }
-}

@@ -1,8 +1,92 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Rendering
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
+    var isLoggedIn = User.Identity.IsAuthenticated; // Check if user is logged in
+    var isAdmin = User.IsInRole("Admin"); // Check if the user is an Admin
+    var isCustomer = User.IsInRole("Customer"); // Check if the user is a Customer
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="home-hero">
+    <div class="hero-overlay d-flex flex-column justify-content-center align-items-center">
+        <h1 class="display-3 text-white">Celebrate Every Moment</h1>
+        <p class="lead text-white mb-4">Find the perfect gift for birthdays, special occasions, and everything in between.</p>
+
+        @if (!isLoggedIn)
+        {
+            <!-- Show 'Shop Now' button if not logged in -->
+            <a href="/Identity/Account/Login" class="btn btn-primary btn-lg">Shop Now</a>
+        }
+        else if (isAdmin)
+        {
+            <!-- Do not show 'Shop Now' button if logged in as Admin -->
+            <p class="lead text-white mb-4">Welcome back, Admin! Manage your store and customers.</p>
+        }
+        else if (isCustomer)
+        {
+            <!-- Redirect customer to products page -->
+            <a href="/Customer/ProductView" class="btn btn-primary btn-lg">Shop Now</a>
+        }
+    </div>
 </div>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Our Best-Selling Gifts</h2>
+    <div class="row text-center">
+        <div class="col-md-3">
+            <img src="/images/birthday-decorations.jpg" alt="Birthday Decorations" class="img-fluid rounded shadow-sm mb-3">
+            <h5>Birthday Decorations</h5>
+            <p>Make birthdays unforgettable with our unique decorations.</p>
+        </div>
+        <div class="col-md-3">
+            <img src="/images/toys.jpg" alt="Toys" class="img-fluid rounded shadow-sm mb-3">
+            <h5>Fun Toys</h5>
+            <p>Perfect for kids and adults who love to play.</p>
+        </div>
+        <div class="col-md-3">
+            <img src="/images/silver-necklace.jpg" alt="Engraved Silver Necklace" class="img-fluid rounded shadow-sm mb-3">
+            <h5>Engraved Silver Necklace</h5>
+            <p>Add a personal touch with custom engravings.</p>
+        </div>
+        <div class="col-md-3">
+            <img src="/images/coffee-mug.jpg" alt="Coffee Mug" class="img-fluid rounded shadow-sm mb-3">
+            <h5>Custom Coffee Mugs</h5>
+            <p>Start your day with a mug that’s uniquely yours.</p>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Why Choose Us?</h2>
+        <p class="lead">We provide high-quality, personalized gifts to make every occasion special. Fast shipping, great prices, and unmatched quality!</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <h2 class="text-center mb-4">What Our Customers Say</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <blockquote class="blockquote">
+                <p>"The birthday decorations were amazing! Everyone loved them."</p>
+                <footer class="blockquote-footer">Emily R.</footer>
+            </blockquote>
+        </div>
+        <div class="col-md-4">
+            <blockquote class="blockquote">
+                <p>"The engraved silver necklace was the perfect gift for my wife."</p>
+                <footer class="blockquote-footer">John D.</footer>
+            </blockquote>
+        </div>
+        <div class="col-md-4">
+            <blockquote class="blockquote">
+                <p>"Beautiful coffee mugs! I love the designs."</p>
+                <footer class="blockquote-footer">Sophia K.</footer>
+            </blockquote>
+        </div>
+    </div>
+</div>
+iv>
