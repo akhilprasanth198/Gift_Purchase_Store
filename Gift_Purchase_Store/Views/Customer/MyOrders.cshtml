@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Gift_Purchase_Store.Models.OrderViewModel>
+
+<h2>My Orders</h2>
+
+@if (!Model.Any())
+{
+    <p>No orders found.</p>
+}
+else
+{
+    @foreach (var order in Model)
+    {
+        <div class="order bg-light p-3 mb-4 shadow-sm rounded">
+            <h3>Order Details</h3>
+            <p><strong>Total Amount:</strong> @order.TotalAmount</p>
+
+            <h4>Order Items:</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in order.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.Price.ToString("C")</td>
+                            <td>@(item.Quantity * item.Price)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

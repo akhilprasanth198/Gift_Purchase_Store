@@ -24,7 +24,7 @@
                             <a class="nav-link text-dark" asp-controller="Product" asp-action="Index">Manage Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Order" asp-action="ViewOrders">View Orders</a>
+                            <a class="nav-link text-dark" asp-controller="Order" asp-action="Order">View Orders</a>
                         </li>
                     }
                     else if (roles.Contains("Customer"))
@@ -38,6 +38,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Customer" asp-action="CreateOrder">Order</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Customer" asp-action="MyOrders">My Orders</a>
                         </li>
                     }
                     <li class="nav-ite"></li>
