@@ -176,8 +176,44 @@ namespace Gift_Purchase_Store.Controllers
             return View(userOrders);
         }
 
+        //PAyment functionality
 
+        
+       
+    
 
+        //view secific user
+
+         [HttpGet]
+        public async Task<IActionResult> MyOrders()
+        {
+            // Get the logged-in user's ID
+            var userId = _userManager.GetUserId(User);
+
+            // Retrieve orders specific to the logged-in user, including related data
+            var orders = await _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product) // Include product details
+                .Where(o => o.UserId == userId) // Filter by user ID
+                .ToListAsync();
+
+            // Convert to a ViewModel for display
+            var orderViewModels = orders.Select(o => new OrderViewModel
+            {
+                TotalAmount = o.TotalAmount,
+                OrderItems = o.OrderItems.Select(oi => new OrderItemViewModel
+                {
+                    ProductId = oi.ProductId,
+                    ProductName = oi.Product.Name,
+                    Quantity = oi.Quantity,
+                    Price = oi.Price
+                }).ToList()
+            });
+
+            return View(orderViewModels);
+        }
     }
+
 }
+
 

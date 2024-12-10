@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Gift_Purchase_Store.Data;
 using Gift_Purchase_Store.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gift_Purchase_Store.Controllers
 {
@@ -142,17 +143,45 @@ namespace Gift_Purchase_Store.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> ViewOrders()
-        {
-            var userId = _userManager.GetUserId(User);
-            
-            var userOrders = await _orders.GetAllByIdAsync(userId, "UserId", new QueryOptions<Order>
-            {
-                Includes = "OrderItems.Product"
-            });
+        //public async Task<IActionResult> ViewOrders()
+        //{
+        //    var userId = _userManager.GetUserId(User);
 
-            return View(userOrders);
+        //    var userOrders = await _orders.GetAllByIdAsync(userId, "UserId", new QueryOptions<Order>
+        //    {
+        //        Includes = "OrderItems.Product"
+        //    });
+
+        //    return View(userOrders);
+        //}
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Order()
+        {
+            var orders = await _context.Orders
+                .Include(o => o.User) // Include the user
+                .Include(o => o.OrderItems) // Include order items
+                .ThenInclude(oi => oi.Product) // Include products in order items
+                .Select(o => new OrderViewModel
+                {
+                    OrderId = o.OrderId,
+                    OrderDate = o.OrderDate,
+                    UserName = o.User.UserName, // Or any other property like FullName
+                    UserEmail = o.User.Email,
+                    TotalAmount = o.TotalAmount,
+                    OrderItems = o.OrderItems.Select(oi => new OrderItemViewModel
+                    {
+                        ProductId = oi.ProductId,
+                        ProductName = oi.Product.Name,
+                        Quantity = oi.Quantity,
+                        Price = oi.Price
+                    }).ToList()
+                })
+                .ToListAsync();
+
+            return View(orders);
         }
+
 
 
 
