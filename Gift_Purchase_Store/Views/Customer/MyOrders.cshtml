@@ -12,7 +12,15 @@ else
     {
         <div class="order bg-light p-3 mb-4 shadow-sm rounded">
             <h3>Order Details</h3>
-            <p><strong>Total Amount:</strong> @order.TotalAmount</p>
+            <p><strong>Total Amount:</strong> @order.TotalAmount.ToString("C")</p>
+
+            <!-- Display Shipping Address -->
+            <h4>Shipping Address:</h4>
+            <p>
+                @order.AddressLine1<br />
+                @order.City, @order.State - @order.ZipCode<br />
+                <strong>Phone:</strong> @order.PhoneNumber
+            </p>
 
             <h4>Order Items:</h4>
             <table class="table">
@@ -31,7 +39,7 @@ else
                             <td>@item.ProductName</td>
                             <td>@item.Quantity</td>
                             <td>@item.Price.ToString("C")</td>
-                            <td>@(item.Quantity * item.Price)</td>
+                            <td>@(item.Quantity * item.Price).ToString("C")</td>
                         </tr>
                     }
                 </tbody>

@@ -1,0 +1,64 @@
+﻿@model OrderViewModel
+
+<h1>Place Order</h1>
+
+@if (Model.OrderItems == null || !Model.OrderItems.Any())
+{
+    <p>Your cart is empty. <a asp-action="Cart">Go to Cart</a></p>
+}
+else
+{
+    <form asp-action="PlaceOrder" method="post">
+        <h3>Order Items</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@(item.Price * item.Quantity).ToString("C")</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                    <td>@Model.TotalAmount.ToString("C")</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Address Form -->
+        <h3>Shipping Address</h3>
+        <div class="form-group">
+            <label for="AddressLine1">Address Line 1</label>
+            <input asp-for="AddressLine1" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="City">City</label>
+            <input asp-for="City" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="State">State</label>
+            <input asp-for="State" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="ZipCode">Zip Code</label>
+            <input asp-for="ZipCode" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="PhoneNumber">Phone Number</label>
+            <input asp-for="PhoneNumber" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
+}
