@@ -68,9 +68,10 @@ namespace Gift_Purchase_Store.Controllers
         {
             ViewBag.Ingredients = await ingredients.GetAllAsync();
             ViewBag.Categories = await categories.GetAllAsync();
+
             if (ModelState.IsValid)
             {
-
+                // Handling the image upload (if provided)
                 if (product.ImageFile != null)
                 {
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
@@ -85,27 +86,27 @@ namespace Gift_Purchase_Store.Controllers
 
                 if (product.ProductId == 0)
                 {
-
+                    // Assign the selected CategoryId to the product
                     product.CategoryId = catId;
 
-                    //add ingredients
+                    // Add the ingredients
                     foreach (int id in ingredientIds)
                     {
                         product.ProductIngredients?.Add(new ProductIngredient { IngredientId = id, ProductId = product.ProductId });
                     }
 
+                    // Save the new product
                     await products.AddAsync(product);
                     return RedirectToAction("ProductView", "Admin");
                 }
                 else
                 {
+                    // Handle editing of an existing product
                     var existingProduct = await products.GetByIdAsync(product.ProductId, new QueryOptions<Product> { Includes = "ProductIngredients" });
 
                     if (existingProduct == null)
                     {
                         ModelState.AddModelError("", "Product not found.");
-                        ViewBag.Ingredients = await ingredients.GetAllAsync();
-                        ViewBag.Categories = await categories.GetAllAsync();
                         return View(product);
                     }
 
@@ -122,19 +123,10 @@ namespace Gift_Purchase_Store.Controllers
                         existingProduct.ProductIngredients?.Add(new ProductIngredient { IngredientId = id, ProductId = product.ProductId });
                     }
 
-                    try
-                    {
-                        await products.UpdateAsync(existingProduct);
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("", $"Error: {ex.GetBaseException().Message}");
-                        ViewBag.Ingredients = await ingredients.GetAllAsync();
-                        ViewBag.Categories = await categories.GetAllAsync();
-                        return View(product);
-                    }
+                    await products.UpdateAsync(existingProduct);
                 }
             }
+
             return RedirectToAction("ProductView", "Admin");
         }
 
@@ -156,137 +148,8 @@ namespace Gift_Purchase_Store.Controllers
             }
         }
         //Order Section
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            //ViewBag.Products = await _products.GetAllAsync();
-
-            //Retrieve or create an OrderViewModel from session or other state management
-            var model = HttpContext.Session.Get<OrderViewModel>("OrderViewModel") ?? new OrderViewModel
-            {
-                OrderItems = new List<OrderItemViewModel>(),
-                Products = await products.GetAllAsync()
-            };
-
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> AddItem(int prodId, int prodQty)
-        {
-            var product = await _context.Products.FindAsync(prodId);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            // Retrieve or create an OrderViewModel from session or other state management
-            var model = HttpContext.Session.Get<OrderViewModel>("OrderViewModel") ?? new OrderViewModel
-            {
-                OrderItems = new List<OrderItemViewModel>(),
-                Products = await products.GetAllAsync()
-            };
-
-            // Check if the product is already in the order
-            var existingItem = model.OrderItems.FirstOrDefault(oi => oi.ProductId == prodId);
-
-            // If the product is already in the order, update the quantity
-            if (existingItem != null)
-            {
-                existingItem.Quantity += prodQty;
-            }
-            else
-            {
-                model.OrderItems.Add(new OrderItemViewModel
-                {
-                    ProductId = product.ProductId,
-                    Price = product.Price,
-                    Quantity = prodQty,
-                    ProductName = product.Name
-                });
-            }
-
-            // Update the total amount
-            model.TotalAmount = model.OrderItems.Sum(oi => oi.Price * oi.Quantity);
-
-            // Save updated OrderViewModel to session
-            HttpContext.Session.Set("OrderViewModel", model);
-
-            // Redirect back to Create to show updated order items
-            return RedirectToAction("Create", model);
-        }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Cart()
-        {
-
-            // Retrieve the OrderViewModel from session or other state management
-            var model = HttpContext.Session.Get<OrderViewModel>("OrderViewModel");
-
-            if (model == null || model.OrderItems.Count == 0)
-            {
-                return RedirectToAction("Create");
-            }
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> PlaceOrder()
-        {
-            var model = HttpContext.Session.Get<OrderViewModel>("OrderViewModel");
-            if (model == null || model.OrderItems.Count == 0)
-            {
-                return RedirectToAction("Create");
-            }
-
-            // Create a new Order entity
-            Order order = new Order
-            {
-                OrderDate = DateTime.Now,
-                TotalAmount = model.TotalAmount,
-                UserId = _userManager.GetUserId(User)
-            };
-
-            // Add OrderItems to the Order entity
-            foreach (var item in model.OrderItems)
-            {
-                order.OrderItems.Add(new OrderItem
-                {
-                    ProductId = item.ProductId,
-                    Quantity = item.Quantity,
-                    Price = item.Price
-                });
-            }
-
-            // Save the Order entity to the database
-            await _orders.AddAsync(order);
-
-            // Clear the OrderViewModel from session or other state management
-            HttpContext.Session.Remove("OrderViewModel");
-
-            // Redirect to the Order Confirmation page
-            return RedirectToAction("ViewOrders");
-        }
-
-        [HttpGet]
-        [Authorize]
-        //public async Task<IActionResult> ViewOrders()
-        //{
-        //    var userId = _userManager.GetUserId(User);
-
-        //    var userOrders = await _orders.GetAllByIdAsync(userId, "UserId", new QueryOptions<Order>
-        //    {
-        //        Includes = "OrderItems.Product"
-        //    });
-
-        //    return View(userOrders);
-        //}
+        
+       
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Order()
@@ -314,6 +177,7 @@ namespace Gift_Purchase_Store.Controllers
 
             return View(orders);
         }
+
 
         //Type Section
         public async Task<IActionResult> TypeView()

@@ -34,6 +34,7 @@
     </div>
     <div class="row">
         <div class="col">
+            <h3>Categories:</h3>
             @foreach (Category category in ViewBag.Categories)
             {
                 <div class="form-check">
@@ -42,10 +43,10 @@
                     }
                     <input type="radio" class="form-check-input" id="@category.CategoryId" name="catId" value="@category.CategoryId" @(isChecked ? "checked" : "") /> @category.Name
                 </div>
-
             }
         </div>
         <div class="col">
+            <h3>Types:</h3>
             @foreach (Ingredient ingredient in ViewBag.Ingredients)
             {
                 <div class="form-check">
