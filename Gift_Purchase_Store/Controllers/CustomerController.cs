@@ -138,64 +138,29 @@ namespace Gift_Purchase_Store.Controllers
             {
                 OrderDate = DateTime.Now,
                 TotalAmount = model.TotalAmount,
-                UserId = _userManager.GetUserId(User),
-                OrderItems = model.OrderItems.Select(item => new OrderItem
+                UserId = _userManager.GetUserId(User)
+            };
+
+            // Add OrderItems to the Order entity
+            foreach (var item in model.OrderItems)
+            {
+                order.OrderItems.Add(new OrderItem
                 {
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
                     Price = item.Price
-                }).ToList()
-            };
-            order.AddressLine1 = model.AddressLine1;
-            order.City = model.City;
-            order.State = model.State;
-            order.ZipCode = model.ZipCode;
-            order.PhoneNumber = model.PhoneNumber;
-
-
-            
+                });
+            }
 
             // Save the Order entity to the database
             await _orders.AddAsync(order);
-            await _context.SaveChangesAsync();
 
             // Clear the OrderViewModel from session or other state management
             HttpContext.Session.Remove("OrderViewModel");
 
             // Redirect to the Order Confirmation page
-            return RedirectToAction("PaymentSuccess", new { orderId = order.OrderId });
-
+            return RedirectToAction("ViewOrders");
         }
-        [HttpGet]
-        [Authorize]
-        public IActionResult PaymentSuccess(int orderId)
-        {
-            var order = _context.Orders
-                .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Product)
-                .FirstOrDefault(o => o.OrderId == orderId);
-
-            if (order == null)
-            {
-                return View("Error", new ErrorViewModel { RequestId = "Order not found." });
-            }
-
-            var model = new OrderViewModel
-            {
-                TotalAmount = order.TotalAmount,
-                OrderItems = order.OrderItems.Select(oi => new OrderItemViewModel
-                {
-                    ProductId = oi.ProductId,
-                    ProductName = oi.Product?.Name,
-                    Quantity = oi.Quantity,
-                    Price = oi.Price
-                }).ToList(),
-                PaymentMethod = "Cash on Delivery"
-            };
-
-            return View(model);
-        }
-
 
         [HttpGet]
         [Authorize]
