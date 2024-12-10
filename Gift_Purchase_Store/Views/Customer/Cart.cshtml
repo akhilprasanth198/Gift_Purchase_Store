@@ -1,7 +1,7 @@
 ﻿@model OrderViewModel
+
 <h1>My Cart</h1>
 
-<!--Form to finalize and create the order-->
 <form asp-action="PlaceOrder" method="post">
     <h3>Order Items</h3>
     <table class="table table-bordered">
@@ -14,24 +14,51 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.OrderItems.Count; i++)
+            @foreach (var item in Model.OrderItems)
             {
                 <tr>
-                    <td>@Model.OrderItems[i].ProductName</td>
-                    <td>@Model.OrderItems[i].Quantity</td>
-                    <td>@Model.OrderItems[i].Price</td>
-                    <td></td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price.ToString("C")</td>
+                    <td>@(item.Price * item.Quantity).ToString("C")</td>
                 </tr>
             }
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="bg-primary bg-gradient text-white fw-bold">@Model.TotalAmount.ToString("C")</td>
+                <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                <td>@Model.TotalAmount.ToString("C")</td>
             </tr>
         </tbody>
     </table>
+    <!-- Address Form -->
+    <h3>Shipping Address</h3>
     <div class="form-group">
-        <input type="submit" value="Place Order" class="btn btn-primary" />
+        <label asp-for="AddressLine1"></label>
+        <input asp-for="AddressLine1" class="form-control" required />
     </div>
+    <div class="form-group">
+        <label asp-for="City"></label>
+        <input asp-for="City" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="State"></label>
+        <input asp-for="State" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="ZipCode"></label>
+        <input asp-for="ZipCode" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" class="form-control" required />
+    </div>
+
+
+    <div class="form-group">
+        <label for="PaymentMethod">Select Payment Method:</label>
+        <select id="PaymentMethod" name="PaymentMethod" class="form-control">
+            <option value="COD">Cash on Delivery</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Place Order</button>
 </form>
