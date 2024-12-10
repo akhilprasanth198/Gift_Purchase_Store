@@ -18,13 +18,13 @@
                     {
                         <!-- Admin-specific links -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Ingredient" asp-action="Index">Manage Types</a>
+                            <a class="nav-link text-dark" asp-controller="Admin" asp-action="TypeView">Manage Types</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Product" asp-action="Index">Manage Products</a>
+                            <a class="nav-link text-dark" asp-controller="Admin" asp-action="ProductView">Manage Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Order" asp-action="Order">View Orders</a>
+                            <a class="nav-link text-dark" asp-controller="Admin" asp-action="Order">View Orders</a>
                         </li>
                     }
                     else if (roles.Contains("Customer"))

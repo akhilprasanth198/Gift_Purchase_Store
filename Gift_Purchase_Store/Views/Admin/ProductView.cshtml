@@ -4,7 +4,7 @@
     ViewBag.Title = "Tequilas Menu Items ";
 }
 
-@functions{
+@functions {
     string GetDeleteModalId(Product prod)
     {
         return "#deleteModal" + prod.ProductId;
@@ -18,12 +18,13 @@
 }
 
 <h2>Gift Purchase Store Items</h2>
-<a asp-action="AddEdit" asp-controller="Product" class="btn btn-primary">Create New Item</a>
+<a asp-action="ProductAddEdit" asp-controller="Admin" class="btn btn-primary">Create New Item</a>
 
 <div class="row">
-@foreach(Product prod in Model){
-    <div class="col-md-4">
-        <form asp-action="delete" asp-controller="product" method="post">
+    @foreach (Product prod in Model)
+    {
+        <div class="col-md-4">
+            <form asp-action="delete" asp-controller="Admin" method="post">
                 <input type="hidden" name="id" value="@prod.ProductId" />
                 <div class="card" style="width: 18rem;">
                     <img src="@Url.Content("~/images/" + prod?.ImageUrl)" class="card-img-top fixed-image-height" alt="@prod.Description">
@@ -32,7 +33,7 @@
                         <p class="card-text">@prod.Description</p>
                         <p class="card-text">@prod.Price.ToString("C")</p>
                         <p class="card-text">Quantity In Stock: @prod.Stock</p>
-                        <a class="btn btn-info" asp-controller="Product" asp-action="AddEdit" asp-route-id="@prod.ProductId"><i class="bi bi-pencil-fill">Edit</i></a>
+                        <a class="btn btn-info" asp-controller="Admin" asp-action="ProductAddEdit" asp-route-id="@prod.ProductId"><i class="bi bi-pencil-fill">Edit</i></a>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@GetDeleteModalId(prod)">
                             <i class="bi bi-trash">Delete</i>
                         </button>
@@ -43,7 +44,7 @@
                                         <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete @prod.Name?</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                   
+
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                         <button type="submit" class="btn btn-danger">Delete</button>
@@ -53,7 +54,7 @@
                         </div>
                     </div>
                 </div>
-        </form>
-    </div>
-}
+            </form>
+        </div>
+    }
 </div>
