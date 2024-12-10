@@ -51,10 +51,14 @@
                         @* Cart item count logic *@
                         @{
                             int cartCount = 0;
-                            if (Context.Session.Get<OrderViewModel>("OrderViewModel") != null)
+                            if (SignInManager.IsSignedIn(User))
                             {
-                                OrderViewModel model = Context.Session.Get<OrderViewModel>("OrderViewModel");
-                                cartCount = model.OrderItems.Sum(product => product.Quantity);
+                                var userId = UserManager.GetUserId(User);
+                                if (!string.IsNullOrEmpty(userId) && Context.Session.Get<OrderViewModel>(userId) != null)
+                                {
+                                    var model = Context.Session.Get<OrderViewModel>(userId);
+                                    cartCount = model.OrderItems.Sum(item => item.Quantity);
+                                }
                             }
                         }
                         <a class="nav-link position-relative" asp-action="Cart" asp-controller="Customer">
@@ -64,6 +68,7 @@
                                 <span class="visually-hidden">Cart Quantity</span>
                             </span>
                         </a>
+
                     </li>
                     <li class="nav-items">
                         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>

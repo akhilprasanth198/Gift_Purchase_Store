@@ -6,7 +6,7 @@
 <h3>Order Details</h3>
 <ul>
     <li><strong>Order Date:</strong> @DateTime.Now.ToString("yyyy-MM-dd")</li>
-    <li><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</li>
+    <li><strong>Total Amount:</strong> @Model.TotalAmount</li>
     <li><strong>Payment Method:</strong> Cash on Delivery</li>
 </ul>
 <div>
@@ -33,7 +33,7 @@
             <tr>
                 <td>@item.ProductName</td>
                 <td>@item.Quantity</td>
-                <td>@item.Price.ToString("C")</td>
+                <td>@item.Price</td>
                 <td>@(item.Price * item.Quantity).ToString("C")</td>
             </tr>
         }

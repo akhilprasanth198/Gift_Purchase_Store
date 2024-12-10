@@ -63,25 +63,24 @@ namespace Gift_Purchase_Store.Controllers
 
         //Order Functionalities
         [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> AddItem(int prodId, int prodQty)
         {
-            var product = await _context.Products.FindAsync(prodId);
-            if (product == null)
-            {
-                return NotFound();
-            }
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
 
-            // Retrieve or create an OrderViewModel from session or other state management
-            var model = HttpContext.Session.Get<OrderViewModel>("OrderViewModel") ?? new OrderViewModel
+            var product = await _context.Products.FindAsync(prodId);
+            if (product == null) return NotFound();
+
+            // Retrieve or create user-specific OrderViewModel
+            var model = HttpContext.Session.Get<OrderViewModel>(userId) ?? new OrderViewModel
             {
                 OrderItems = new List<OrderItemViewModel>(),
                 Products = await products.GetAllAsync()
             };
 
-            // Check if the product is already in the order
-            var existingItem = model.OrderItems.FirstOrDefault(oi => oi.ProductId == prodId);
-
-            // If the product is already in the order, update the quantity
+            // Add or update product in the order
+            var existingItem = model.OrderItems.FirstOrDefault(item => item.ProductId == prodId);
             if (existingItem != null)
             {
                 existingItem.Quantity += prodQty;
@@ -91,31 +90,33 @@ namespace Gift_Purchase_Store.Controllers
                 model.OrderItems.Add(new OrderItemViewModel
                 {
                     ProductId = product.ProductId,
-                    Price = product.Price,
+                    ProductName = product.Name,
                     Quantity = prodQty,
-                    ProductName = product.Name
+                    Price = product.Price
                 });
             }
 
-            // Update the total amount
-            model.TotalAmount = model.OrderItems.Sum(oi => oi.Price * oi.Quantity);
+            // Update total amount
+            model.TotalAmount = model.OrderItems.Sum(item => item.Price * item.Quantity);
 
-            // Save updated OrderViewModel to session
-            HttpContext.Session.Set("OrderViewModel", model);
+            // Save back to session
+            HttpContext.Session.Set(userId, model);
 
-            // Redirect back to Create to show updated order items
             return RedirectToAction("CreateOrder", model);
         }
 
+
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Cart()
+        [HttpGet]
+        [Authorize]
+        public IActionResult Cart()
         {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
 
-            // Retrieve the OrderViewModel from session or other state management
-            var model = HttpContext.Session.Get<OrderViewModel>("OrderViewModel");
-
-            if (model == null || model.OrderItems.Count == 0)
+            var model = HttpContext.Session.Get<OrderViewModel>(userId);
+            if (model == null || !model.OrderItems.Any())
             {
                 return RedirectToAction("CreateOrder");
             }
@@ -123,22 +124,27 @@ namespace Gift_Purchase_Store.Controllers
             return View(model);
         }
 
+
+        [HttpPost]
+        [Authorize]
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> PlaceOrder()
         {
-            var model = HttpContext.Session.Get<OrderViewModel>("OrderViewModel");
-            if (model == null || model.OrderItems.Count == 0)
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
+
+            var model = HttpContext.Session.Get<OrderViewModel>(userId);
+            if (model == null || !model.OrderItems.Any())
             {
                 return RedirectToAction("CreateOrder");
             }
 
-            // Create a new Order entity
-            Order order = new Order
+            var order = new Order
             {
                 OrderDate = DateTime.Now,
                 TotalAmount = model.TotalAmount,
-                UserId = _userManager.GetUserId(User),
+                UserId = userId,
                 OrderItems = model.OrderItems.Select(item => new OrderItem
                 {
                     ProductId = item.ProductId,
@@ -146,26 +152,16 @@ namespace Gift_Purchase_Store.Controllers
                     Price = item.Price
                 }).ToList()
             };
-            order.AddressLine1 = model.AddressLine1;
-            order.City = model.City;
-            order.State = model.State;
-            order.ZipCode = model.ZipCode;
-            order.PhoneNumber = model.PhoneNumber;
 
-
-            
-
-            // Save the Order entity to the database
             await _orders.AddAsync(order);
             await _context.SaveChangesAsync();
 
-            // Clear the OrderViewModel from session or other state management
-            HttpContext.Session.Remove("OrderViewModel");
+            // Clear user's cart
+            HttpContext.Session.Remove(userId);
 
-            // Redirect to the Order Confirmation page
             return RedirectToAction("PaymentSuccess", new { orderId = order.OrderId });
-
         }
+
         [HttpGet]
         [Authorize]
         public IActionResult PaymentSuccess(int orderId)

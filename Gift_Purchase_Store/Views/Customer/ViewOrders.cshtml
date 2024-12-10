@@ -22,7 +22,7 @@
                     <ul>
                         @foreach (var item in order.OrderItems)
                         {
-                            <li>@item.Product.Name - @item.Quantity x @item.Price.ToString("C")</li>
+                            <li>@item.Product.Name - @item.Quantity x @item.Price</li>
                         }
                     </ul>
                 </td>
