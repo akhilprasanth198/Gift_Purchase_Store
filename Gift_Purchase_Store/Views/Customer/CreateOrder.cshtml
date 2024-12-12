@@ -14,7 +14,7 @@
                 <div class="card" style="width: 18rem;">
                     <img src="@Url.Content("~/images/" + product?.ImageUrl)" class="card-img-top fixed-image-height" alt="@product.Description">
                     <div class="card-body">
-                        @product.Name - @product.Price.ToString("C")
+                        @product.Name - @product.Price
                         <input type="hidden" value="@product.ProductId" name="prodId" />
                         <input type="number" name="prodQty" class="form-control" />
                         <button class="btn btn-info" type="submit">Add</button>

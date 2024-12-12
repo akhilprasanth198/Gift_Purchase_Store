@@ -1,9 +1,5 @@
 ﻿@model IEnumerable<Gift_Purchase_Store.Models.OrderViewModel>
 
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml"; // Ensure you're using your master layout file.
-}
-
 <div class="container mt-5">
     <h1 class="text-center mb-4" style="color: #6c757d;">🎁 Your Order History</h1>
 
@@ -25,6 +21,21 @@
                     <p><strong>Order Date:</strong> <span style="color: #3498db;">@order.OrderDate.ToString("yyyy-MM-dd")</span></p>
                     <p><strong>User:</strong> @order.UserName (@order.UserEmail)</p>
                     <p><strong>Total Amount:</strong> <span style="color: #27ae60; font-weight: bold;">@order.TotalAmount</span></p>
+
+                    <h5 class="mt-4" style="color: #6c757d;">Shipping Address</h5>
+                    @if (order.ShippingAddress != null)
+                    {
+                        <p>
+                            <strong>Address Line 1:</strong> @order.ShippingAddress.AddressLine1<br />
+                            <strong>City:</strong> @order.ShippingAddress.City<br />
+                            <strong>State:</strong> @order.ShippingAddress.State<br />
+                            <strong>Postal Code:</strong> @order.ShippingAddress.ZipCode<br />
+                        </p>
+                    }
+                    else
+                    {
+                        <p><strong>Shipping Address:</strong> No shipping address provided.</p>
+                    }
 
                     <h5 class="mt-4" style="color: #6c757d;">Order Items</h5>
                     <table class="table table-borderless">

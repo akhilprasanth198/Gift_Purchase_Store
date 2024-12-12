@@ -239,20 +239,37 @@ namespace Gift_Purchase_Store.Controllers
         //view secific user
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> MyOrders()
         {
-            // Get the logged-in user's ID
+            // Retrieve the logged-in user's ID
             var userId = _userManager.GetUserId(User);
 
-            // Retrieve orders specific to the logged-in user, including related data
+            // Fetch only the orders for the logged-in user
             var orders = await _context.Orders
-                .Include(o => o.OrderItems)
-                    .ThenInclude(oi => oi.Product) // Include product details
-                    .Include(o => o.ShippingAddress)
                 .Where(o => o.UserId == userId) // Filter by user ID
+                .Include(o => o.OrderItems) // Include order items
+                .ThenInclude(oi => oi.Product) // Include product details
+                .Include(o => o.ShippingAddress) // Include shipping address
+                .Select(o => new OrderViewModel
+                {
+                    OrderId = o.OrderId,
+                    OrderDate = o.OrderDate,
+                    UserName = o.User.UserName,
+                    UserEmail = o.User.Email,
+                    TotalAmount = o.TotalAmount,
+                    ShippingAddress = o.ShippingAddress, // Include shipping address
+                    OrderItems = o.OrderItems.Select(oi => new OrderItemViewModel
+                    {
+                        ProductId = oi.ProductId,
+                        ProductName = oi.Product.Name,
+                        Quantity = oi.Quantity,
+                        Price = oi.Price
+                    }).ToList()
+                })
                 .ToListAsync();
 
-                    return View(orders);
+            return View(orders); // Pass filtered orders to the view
         }
 
 

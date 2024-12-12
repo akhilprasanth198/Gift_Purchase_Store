@@ -155,31 +155,31 @@ namespace Gift_Purchase_Store.Controllers
         public async Task<IActionResult> Order()
         {
             var orders = await _context.Orders
-                .Include(o => o.User) // Include user
+                .Include(o => o.User) // Include the user
                 .Include(o => o.OrderItems) // Include order items
-                .ThenInclude(oi => oi.Product) // Include product details
-                .Include(o => o.ShippingAddress) // Include shipping address
+                .ThenInclude(oi => oi.Product) // Include products in order items
+                .Include(o => o.ShippingAddress)
                 .Select(o => new OrderViewModel
                 {
                     OrderId = o.OrderId,
                     OrderDate = o.OrderDate,
-                    UserName = o.User.UserName, // User details
+                    UserName = o.User.UserName, // Or any other property like FullName
                     UserEmail = o.User.Email,
                     TotalAmount = o.TotalAmount,
-                    //ShippingAddress = $"{o.ShippingAddress.AddressLine1}, {o.ShippingAddress.City}, {o.ShippingAddress.State}, {o.ShippingAddress.ZipCode}", // Map shipping address
+                    ShippingAddress = o.ShippingAddress,
                     OrderItems = o.OrderItems.Select(oi => new OrderItemViewModel
                     {
                         ProductId = oi.ProductId,
                         ProductName = oi.Product.Name,
                         Quantity = oi.Quantity,
                         Price = oi.Price
-                    }).ToList()
+                    }).ToList(),
+                    
                 })
                 .ToListAsync();
 
             return View(orders);
         }
-
 
 
         //Type Section

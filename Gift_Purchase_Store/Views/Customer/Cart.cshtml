@@ -19,15 +19,15 @@
                 <tr>
                     <td>@item.ProductName</td>
                     <td>@item.Quantity</td>
-                    <td>@item.Price.ToString("C")</td>
-                    <td>@(item.Price * item.Quantity).ToString("C")</td>
+                    <td>@item.Price</td>
+                    <td>@(item.Price * item.Quantity)</td>
                 </tr>
             }
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
-                <td>@Model.TotalAmount.ToString("C")</td>
+                <td>@Model.TotalAmount</td>
             </tr>
         </tfoot>
     </table>
@@ -50,8 +50,17 @@
             {
                 <option disabled>No shipping addresses available</option>
             }
-
         </select>
+    </div>
+
+    <!-- Manage Shipping Address Button -->
+    <div class="form-group mt-3">
+        <a href="@Url.Action("AddressIndex", "ShippingAddress")" class="btn btn-secondary">Manage Shipping Address</a>
+    </div>
+
+    <!-- Payment Method Note -->
+    <div class="form-group mt-3">
+        <p><strong>Payment Method:</strong> Cash on Delivery (COD) only</p>
     </div>
 
     <div class="form-group">
