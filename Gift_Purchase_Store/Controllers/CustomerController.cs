@@ -106,11 +106,40 @@ namespace Gift_Purchase_Store.Controllers
         }
 
 
+
         [HttpGet]
         [Authorize]
         [HttpGet]
         [Authorize]
-        public IActionResult Cart()
+        public async Task<IActionResult> Cart()
+        {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
+
+            // Retrieve the current user's order view model from session
+            var model = HttpContext.Session.Get<OrderViewModel>(userId);
+            if (model == null || !model.OrderItems.Any())
+            {
+                return RedirectToAction("CreateOrder");
+            }
+
+            // Fetch the user's shipping addresses
+            var shippingAddresses = await _context.ShippingAddresses
+                .Where(address => address.UserId == userId)
+                .ToListAsync();
+
+            // Assign shipping addresses to ViewBag
+            ViewBag.ShippingAddresses = shippingAddresses;
+
+            return View(model);
+        }
+
+
+
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> PlaceOrder(int selectedAddressId)
         {
             var userId = _userManager.GetUserId(User);
             if (userId == null) return Unauthorized();
@@ -121,23 +150,10 @@ namespace Gift_Purchase_Store.Controllers
                 return RedirectToAction("CreateOrder");
             }
 
-            return View(model);
-        }
-
-
-        [HttpPost]
-        [Authorize]
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> PlaceOrder()
-        {
-            var userId = _userManager.GetUserId(User);
-            if (userId == null) return Unauthorized();
-
-            var model = HttpContext.Session.Get<OrderViewModel>(userId);
-            if (model == null || !model.OrderItems.Any())
+            var selectedAddress = await _context.ShippingAddresses.FindAsync(selectedAddressId);
+            if (selectedAddress == null || selectedAddress.UserId != userId)
             {
-                return RedirectToAction("CreateOrder");
+                return Unauthorized();
             }
 
             var order = new Order
@@ -145,6 +161,7 @@ namespace Gift_Purchase_Store.Controllers
                 OrderDate = DateTime.Now,
                 TotalAmount = model.TotalAmount,
                 UserId = userId,
+                ShippingAddressId = selectedAddressId,
                 OrderItems = model.OrderItems.Select(item => new OrderItem
                 {
                     ProductId = item.ProductId,
@@ -153,14 +170,14 @@ namespace Gift_Purchase_Store.Controllers
                 }).ToList()
             };
 
-            await _orders.AddAsync(order);
+            await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();
 
-            // Clear user's cart
             HttpContext.Session.Remove(userId);
 
             return RedirectToAction("PaymentSuccess", new { orderId = order.OrderId });
         }
+
 
         [HttpGet]
         [Authorize]
@@ -169,6 +186,7 @@ namespace Gift_Purchase_Store.Controllers
             var order = _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
+                .Include(o => o.ShippingAddress)
                 .FirstOrDefault(o => o.OrderId == orderId);
 
             if (order == null)
@@ -186,7 +204,15 @@ namespace Gift_Purchase_Store.Controllers
                     Quantity = oi.Quantity,
                     Price = oi.Price
                 }).ToList(),
-                PaymentMethod = "Cash on Delivery"
+                PaymentMethod = "Cash on Delivery",
+                ShippingAddress = new ShippingAddress
+                {
+                    AddressLine1 = order.ShippingAddress?.AddressLine1,
+                    City = order.ShippingAddress?.City,
+                    State = order.ShippingAddress?.State,
+                    ZipCode = order.ShippingAddress?.ZipCode,
+                    PhoneNumber = order.ShippingAddress?.PhoneNumber
+                }
             };
 
             return View(model);
@@ -207,15 +233,12 @@ namespace Gift_Purchase_Store.Controllers
             return View(userOrders);
         }
 
-        //PAyment functionality
 
-        
-       
-    
+
 
         //view secific user
 
-         [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> MyOrders()
         {
             // Get the logged-in user's ID
@@ -225,26 +248,16 @@ namespace Gift_Purchase_Store.Controllers
             var orders = await _context.Orders
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Product) // Include product details
+                    .Include(o => o.ShippingAddress)
                 .Where(o => o.UserId == userId) // Filter by user ID
                 .ToListAsync();
 
-            // Convert to a ViewModel for display
-            var orderViewModels = orders.Select(o => new OrderViewModel
-            {
-                TotalAmount = o.TotalAmount,
-                OrderItems = o.OrderItems.Select(oi => new OrderItemViewModel
-                {
-                    ProductId = oi.ProductId,
-                    ProductName = oi.Product.Name,
-                    Quantity = oi.Quantity,
-                    Price = oi.Price
-                }).ToList()
-            });
-
-            return View(orderViewModels);
+                    return View(orders);
         }
-    }
 
-}
+
+        }
+
+    }
 
 

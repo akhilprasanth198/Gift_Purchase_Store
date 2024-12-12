@@ -18,6 +18,8 @@ namespace Gift_Purchase_Store.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<ProductIngredient> ProductIngredients { get; set; }
 
+        public DbSet<ShippingAddress> ShippingAddresses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

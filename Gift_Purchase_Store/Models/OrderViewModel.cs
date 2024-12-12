@@ -1,4 +1,6 @@
-﻿namespace Gift_Purchase_Store.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Gift_Purchase_Store.Models
 {
     public class OrderViewModel
 
@@ -10,12 +12,8 @@
         public decimal TotalAmount { get; set; }
         public List<OrderItemViewModel> OrderItems { get; set; }
         public string PaymentMethod { get; set; }
-        // New fields for address
-        public string AddressLine1 { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
-        public string PhoneNumber { get; set; }
+       
         public IEnumerable<Product> Products { get; set; }
+        public ShippingAddress ShippingAddress { get;  set; }
     }
 }

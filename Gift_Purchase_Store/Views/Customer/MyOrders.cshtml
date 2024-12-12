@@ -1,49 +1,35 @@
-﻿@model IEnumerable<Gift_Purchase_Store.Models.OrderViewModel>
-
-<h2>My Orders</h2>
-
-@if (!Model.Any())
-{
-    <p>No orders found.</p>
-}
-else
-{
-    @foreach (var order in Model)
-    {
-        <div class="order bg-light p-3 mb-4 shadow-sm rounded">
-            <h3>Order Details</h3>
-            <p><strong>Total Amount:</strong> @order.TotalAmount</p>
-
-            <!-- Display Shipping Address -->
-            <h4>Shipping Address:</h4>
-            <p>
-                @order.AddressLine1<br />
-                @order.City, @order.State - @order.ZipCode<br />
-                <strong>Phone:</strong> @order.PhoneNumber
-            </p>
-
-            <h4>Order Items:</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in order.OrderItems)
-                    {
-                        <tr>
-                            <td>@item.ProductName</td>
-                            <td>@item.Quantity</td>
-                            <td>@item.Price</td>
-                            <td>@(item.Quantity * item.Price)</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-}
+﻿<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Total Amount</th>
+            <th>Shipping Address</th>
+            <th>Order Items</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                <td>@order.TotalAmount.ToString("C")</td>
+                <td>
+                    @order.ShippingAddress.AddressLine1,
+                    @order.ShippingAddress.City,
+                    @order.ShippingAddress.State,
+                    @order.ShippingAddress.ZipCode
+                </td>
+                <td>
+                    <ul>
+                        @foreach (var item in order.OrderItems)
+                        {
+                            <li>@item.Product.Name - @item.Quantity x @item.Price</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

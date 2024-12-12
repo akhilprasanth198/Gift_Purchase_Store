@@ -32,7 +32,7 @@
                         <h5 class="card-title">@prod.Name</h5>
                         <p class="card-text">@prod.Description</p>
                         <p class="card-text">@prod.Price</p>
-                        <p class="card-text">Quantity In Stock: @prod.Stock</p>
+                        @* <p class="card-text">Quantity In Stock: @prod.Stock</p> *@
                         <a class="btn btn-info" asp-controller="Admin" asp-action="ProductAddEdit" asp-route-id="@prod.ProductId"><i class="bi bi-pencil-fill">Edit</i></a>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@GetDeleteModalId(prod)">
                             <i class="bi bi-trash">Delete</i>

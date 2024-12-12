@@ -23,42 +23,38 @@
                     <td>@(item.Price * item.Quantity).ToString("C")</td>
                 </tr>
             }
+        </tbody>
+        <tfoot>
             <tr>
                 <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
                 <td>@Model.TotalAmount.ToString("C")</td>
             </tr>
-        </tbody>
+        </tfoot>
     </table>
-    <!-- Address Form -->
+
+    <!-- Shipping Address Selection -->
     <h3>Shipping Address</h3>
     <div class="form-group">
-        <label asp-for="AddressLine1"></label>
-        <input asp-for="AddressLine1" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label asp-for="City"></label>
-        <input asp-for="City" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label asp-for="State"></label>
-        <input asp-for="State" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label asp-for="ZipCode"></label>
-        <input asp-for="ZipCode" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" class="form-control" required />
-    </div>
+        <label for="selectedAddressId">Select a Shipping Address:</label>
+        <select id="selectedAddressId" name="selectedAddressId" class="form-control" required>
+            @if (ViewBag.ShippingAddresses is List<ShippingAddress> addresses && addresses.Any())
+            {
+                @foreach (var address in addresses)
+                {
+                    <option value="@address.ShippingAddressId">
+                        @address.AddressLine1, @address.City, @address.State, @address.ZipCode
+                    </option>
+                }
+            }
+            else
+            {
+                <option disabled>No shipping addresses available</option>
+            }
 
-
-    <div class="form-group">
-        <label for="PaymentMethod">Select Payment Method:</label>
-        <select id="PaymentMethod" name="PaymentMethod" class="form-control">
-            <option value="COD">Cash on Delivery</option>
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Place Order</button>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </div>
 </form>

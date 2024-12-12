@@ -155,16 +155,18 @@ namespace Gift_Purchase_Store.Controllers
         public async Task<IActionResult> Order()
         {
             var orders = await _context.Orders
-                .Include(o => o.User) // Include the user
+                .Include(o => o.User) // Include user
                 .Include(o => o.OrderItems) // Include order items
-                .ThenInclude(oi => oi.Product) // Include products in order items
+                .ThenInclude(oi => oi.Product) // Include product details
+                .Include(o => o.ShippingAddress) // Include shipping address
                 .Select(o => new OrderViewModel
                 {
                     OrderId = o.OrderId,
                     OrderDate = o.OrderDate,
-                    UserName = o.User.UserName, // Or any other property like FullName
+                    UserName = o.User.UserName, // User details
                     UserEmail = o.User.Email,
                     TotalAmount = o.TotalAmount,
+                    //ShippingAddress = $"{o.ShippingAddress.AddressLine1}, {o.ShippingAddress.City}, {o.ShippingAddress.State}, {o.ShippingAddress.ZipCode}", // Map shipping address
                     OrderItems = o.OrderItems.Select(oi => new OrderItemViewModel
                     {
                         ProductId = oi.ProductId,
@@ -177,6 +179,7 @@ namespace Gift_Purchase_Store.Controllers
 
             return View(orders);
         }
+
 
 
         //Type Section

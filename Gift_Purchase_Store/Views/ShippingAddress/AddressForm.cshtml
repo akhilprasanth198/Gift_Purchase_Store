@@ -1,0 +1,32 @@
+﻿@model Gift_Purchase_Store.Models.ShippingAddress
+
+@{
+    ViewData["Title"] = Model.ShippingAddressId == 0 ? "Add New Address" : "Edit Address";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Save" method="post">
+    <div class="form-group">
+        <label for="AddressLine1">Address Line 1</label>
+        <input type="text" class="form-control" id="AddressLine1" name="AddressLine1" value="@Model.AddressLine1" required />
+    </div>
+    <div class="form-group">
+        <label for="City">City</label>
+        <input type="text" class="form-control" id="City" name="City" value="@Model.City" required />
+    </div>
+    <div class="form-group">
+        <label for="State">State</label>
+        <input type="text" class="form-control" id="State" name="State" value="@Model.State" required />
+    </div>
+    <div class="form-group">
+        <label for="ZipCode">Zip Code</label>
+        <input type="text" class="form-control" id="ZipCode" name="ZipCode" value="@Model.ZipCode" required />
+    </div>
+    <div class="form-group">
+        <label for="PhoneNumber">Phone Number</label>
+        <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Address</button>
+</form>

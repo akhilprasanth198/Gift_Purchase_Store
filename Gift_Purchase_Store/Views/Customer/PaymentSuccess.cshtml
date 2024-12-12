@@ -9,12 +9,21 @@
     <li><strong>Total Amount:</strong> @Model.TotalAmount</li>
     <li><strong>Payment Method:</strong> Cash on Delivery</li>
 </ul>
-<div>
-    <h4>Shipping Address</h4>
-    <p>@Model.AddressLine1</p>
-    <p>@Model.City, @Model.State - @Model.ZipCode</p>
-    <p>Phone: @Model.PhoneNumber</p>
-</div>
+
+<h3>Shipping Address</h3>
+@if (Model.ShippingAddress != null)
+{
+    <address>
+        <p>@Model.ShippingAddress.AddressLine1</p>
+        <p>@Model.ShippingAddress.City, @Model.ShippingAddress.State - @Model.ShippingAddress.ZipCode</p>
+        <p><strong>Phone:</strong> @Model.ShippingAddress.PhoneNumber</p>
+    </address>
+}
+else
+{
+    <p><em>No shipping address available.</em></p>
+}
+
 
 
 <h4>Ordered Items</h4>
@@ -40,4 +49,4 @@
     </tbody>
 </table>
 
-<a href="@Url.Action("ViewOrders", "Customer")" class="btn btn-primary">View All Orders</a>
+<a href="@Url.Action("MyOrders", "Customer")" class="btn btn-primary">View All Orders</a>

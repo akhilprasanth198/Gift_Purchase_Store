@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Gift_Purchase_Store.Models.ShippingAddress>
+
+@{
+    ViewData["Title"] = "Shipping Addresses";
+}
+
+<h2>Shipping Addresses</h2>
+
+@if (!Model.Any())
+{
+    <p>You have no saved addresses. <a href="@Url.Action("Save", "ShippingAddress")">Add a new address</a>.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Address Line 1</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Zip Code</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var address in Model)
+            {
+                <tr>
+                    <td>@address.AddressLine1</td>
+                    <td>@address.City</td>
+                    <td>@address.State</td>
+                    <td>@address.ZipCode</td>
+                    <td>@address.PhoneNumber</td>
+                    <td>
+                        <a href="@Url.Action("Save", "ShippingAddress", new { id = address.ShippingAddressId })">Edit</a> |
+                        <a href="@Url.Action("Delete", "ShippingAddress", new { id = address.ShippingAddressId })" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
