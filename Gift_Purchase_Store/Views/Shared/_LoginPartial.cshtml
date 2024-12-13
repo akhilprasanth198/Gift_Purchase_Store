@@ -17,13 +17,13 @@
                     if (roles.Contains("Admin"))
                     {
                         <!-- Admin-specific links -->
-                        <li class="nav-item">
+                        <li class="nav-item" style="padding-left:30px;">
                             <a class="nav-link text-dark" asp-controller="Admin" asp-action="TypeView">Manage Types</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" style="padding-left:30px;">
                             <a class="nav-link text-dark" asp-controller="Admin" asp-action="ProductView">Manage Products</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" style="padding-left:30px;">
                             <a class="nav-link text-dark" asp-controller="Admin" asp-action="Order">View Orders</a>
                         </li>
                     }
@@ -31,13 +31,13 @@
                     {
                         <!-- Customer-specific links -->
                         
-                        <li class="nav-item">
+                        <li class="nav-item" style="padding-left:30px;">
                             <a class="nav-link text-dark" asp-controller="Customer" asp-action="ProductView">Products</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" style="padding-left:30px;">
                             <a class="nav-link text-dark" asp-controller="Customer" asp-action="CreateOrder">Order</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" style="padding-left:30px;">
                             <a class="nav-link text-dark" asp-controller="Customer" asp-action="MyOrders">My Orders</a>
                         </li>
 
@@ -65,6 +65,7 @@
                             </a>
                         </li>
                     }
+                    <li class="nav-item" style="padding-left:360px;"></li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
                     </li>
