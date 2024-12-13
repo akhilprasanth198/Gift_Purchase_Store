@@ -26,12 +26,90 @@ body {
     object-fit: cover; /* Ensures the image covers the area without distortion */
     width: 100%; /* Ensures the image takes the full width of the container */
 }
-.nav-item{
-    padding-left:40px;
+
+.navbar {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
 }
-.nav-items {
-    padding-left: 10px;
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease-in-out;
 }
-.nav-ite{
-    padding-left:100px;
+
+    .navbar-brand:hover {
+        color: #0056b3;
+        text-decoration: none;
+    }
+
+.nav-link {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+    .nav-link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+.btn-custom {
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-outline-primary {
+    border-color: #0056b3;
+    color: #0056b3;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #0056b3;
+        color: #fff;
+    }
+
+.btn-primary {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+    .btn-primary:hover {
+        background-color: #004494;
+        border-color: #004494;
+    }
+
+.fixed-image-height {
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+.product-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.card-text {
+    margin: 0.5rem 0;
+}
+
+.text-truncate {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

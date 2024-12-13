@@ -1,39 +1,24 @@
 ﻿@model IEnumerable<Product>
 
 @{
-    ViewBag.Title = "Tequilas Menu Items ";
+    ViewBag.Title = "Gift Purchase Store Items";
 }
 
-@functions {
-    string GetDeleteModalId(Product prod)
-    {
-        return "#deleteModal" + prod.ProductId;
-    }
-
-    string GetModalId(Product prod)
-    {
-        return "deleteModal" + prod.ProductId;
-    }
-
-}
-
-<h2>Gift Purchase Store Items</h2>
-<div class="row">
-    @foreach (Product prod in Model)
-    {
-        <div class="col-md-4">
-            <form asp-action="delete" asp-controller="product" method="post">
-                <input type="hidden" name="id" value="@prod.ProductId" />
-                <div class="card" style="width: 18rem;">
+<h2 class="text-center my-4">Gift Purchase Store Items</h2>
+<div class="container">
+    <div class="row g-4">
+        @foreach (var prod in Model)
+        {
+            <div class="col-md-4 col-lg-3">
+                <div class="card product-card shadow-sm">
                     <img src="@Url.Content("~/images/" + prod?.ImageUrl)" class="card-img-top fixed-image-height" alt="@prod.Description">
-                    <div class="card-body">
-                        <h5 class="card-title">@prod.Name</h5>
-                        <p class="card-text">@prod.Description</p>
-                        <p class="card-text">@prod.Price</p>
-                        @* <p class="card-text">Quantity In Stock: @prod.Stock</p> *@
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-truncate">@prod.Name</h5>
+                        <p class="card-text text-muted small">@prod.Description</p>
+                        <p class="card-text fw-bold">₹@prod.Price</p>
                     </div>
                 </div>
-            </form>
-        </div>
-    }
+            </div>
+        }
+    </div>
 </div>

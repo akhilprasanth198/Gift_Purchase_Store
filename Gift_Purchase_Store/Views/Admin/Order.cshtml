@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<Gift_Purchase_Store.Models.OrderViewModel>
 
-<div class="container mt-5">
-    <h1 class="text-center mb-4" style="color: #6c757d;">🎁 Your Order History</h1>
+<h1 class="text-center mb-4" style="color: #6c757d;">Your Order History</h1>
 
+<div class="container mt-5">
+    
     @if (!Model.Any())
     {
         <div class="alert alert-info text-center">

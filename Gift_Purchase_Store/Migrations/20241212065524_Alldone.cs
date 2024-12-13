@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Gift_Purchase_Store.Migrations
 {
     /// <inheritdoc />
-    public partial class intial : Migration
+    public partial class Alldone : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -186,20 +186,23 @@ namespace Gift_Purchase_Store.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "ShippingAddresses",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "int", nullable: false)
+                    ShippingAddressId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    AddressLine1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    State = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.PrimaryKey("PK_ShippingAddresses", x => x.ShippingAddressId);
                     table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_UserId",
+                        name: "FK_ShippingAddresses_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
@@ -230,6 +233,56 @@ namespace Gift_Purchase_Store.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ShippingAddressId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Orders_ShippingAddresses_ShippingAddressId",
+                        column: x => x.ShippingAddressId,
+                        principalTable: "ShippingAddresses",
+                        principalColumn: "ShippingAddressId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductIngredients",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    IngredientId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductIngredients", x => new { x.ProductId, x.IngredientId });
+                    table.ForeignKey(
+                        name: "FK_ProductIngredients_Ingredients_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredients",
+                        principalColumn: "IngredientId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductIngredients_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderItems",
                 columns: table => new
                 {
@@ -251,30 +304,6 @@ namespace Gift_Purchase_Store.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderItems_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductIngredients",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    IngredientId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductIngredients", x => new { x.ProductId, x.IngredientId });
-                    table.ForeignKey(
-                        name: "FK_ProductIngredients_Ingredients_IngredientId",
-                        column: x => x.IngredientId,
-                        principalTable: "Ingredients",
-                        principalColumn: "IngredientId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductIngredients_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
@@ -380,6 +409,11 @@ namespace Gift_Purchase_Store.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_ShippingAddressId",
+                table: "Orders",
+                column: "ShippingAddressId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
                 table: "Orders",
                 column: "UserId");
@@ -393,6 +427,11 @@ namespace Gift_Purchase_Store.Migrations
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShippingAddresses_UserId",
+                table: "ShippingAddresses",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -432,10 +471,13 @@ namespace Gift_Purchase_Store.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "ShippingAddresses");
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

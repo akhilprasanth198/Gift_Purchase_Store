@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gift_Purchase_Store.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241211140846_intial")]
-    partial class intial
+    [Migration("20241212065524_Alldone")]
+    partial class Alldone
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,6 +129,9 @@ namespace Gift_Purchase_Store.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ShippingAddressId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
@@ -136,6 +139,8 @@ namespace Gift_Purchase_Store.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("ShippingAddressId");
 
                     b.HasIndex("UserId");
 
@@ -292,6 +297,39 @@ namespace Gift_Purchase_Store.Migrations
                             ProductId = 4,
                             IngredientId = 3
                         });
+                });
+
+            modelBuilder.Entity("Gift_Purchase_Store.Models.ShippingAddress", b =>
+                {
+                    b.Property<int>("ShippingAddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShippingAddressId"));
+
+                    b.Property<string>("AddressLine1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ShippingAddressId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ShippingAddresses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -514,9 +552,15 @@ namespace Gift_Purchase_Store.Migrations
 
             modelBuilder.Entity("Gift_Purchase_Store.Models.Order", b =>
                 {
+                    b.HasOne("Gift_Purchase_Store.Models.ShippingAddress", "ShippingAddress")
+                        .WithMany()
+                        .HasForeignKey("ShippingAddressId");
+
                     b.HasOne("Gift_Purchase_Store.Models.ApplicationUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("ShippingAddress");
 
                     b.Navigation("User");
                 });
@@ -568,6 +612,15 @@ namespace Gift_Purchase_Store.Migrations
                     b.Navigation("Ingredient");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Gift_Purchase_Store.Models.ShippingAddress", b =>
+                {
+                    b.HasOne("Gift_Purchase_Store.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

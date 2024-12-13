@@ -3,63 +3,68 @@
 @{
     ViewBag.Title = $"{ViewBag.Operation} Menu Item";
 }
-
-<h1>@ViewBag.Operation Menu Item</h1>
-<form asp-action="ProductAddEdit" method="post" enctype="multipart/form-data">
+<h1 class="text-center mb-4" style="color: #6c757d;">@ViewBag.Operation Menu Item</h1>
+<form asp-action="ProductAddEdit" method="post" enctype="multipart/form-data" class="p-4 shadow rounded bg-light">
     <input type="hidden" asp-for="ProductId" />
     <input type="hidden" asp-for="CategoryId" />
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" name="Name" />
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" name="Name" placeholder="Enter product name" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Description"></label>
-        <input asp-for="Description" class="form-control" name="Description" />
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" name="Description" placeholder="Enter product description"></textarea>
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" name="Price" />
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" name="Price" placeholder="Enter price in USD" />
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Stock">Quantity In Stock</label>
-        <input asp-for="Stock" class="form-control" name="Stock" />
+    <div class="mb-3">
+        <label asp-for="Stock" class="form-label">Quantity In Stock</label>
+        <input asp-for="Stock" class="form-control" name="Stock" placeholder="Enter stock quantity" />
         <span asp-validation-for="Stock" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label for="imageUpload">Upload Image</label>
+    <div class="mb-3">
+        <label for="imageUpload" class="form-label">Upload Image</label>
         <input type="file" class="form-control" id="imageUpload" name="ImageFile" asp-for="ImageFile" />
     </div>
     <div class="row">
-        <div class="col">
-            <h3>Categories:</h3>
-            @foreach (Category category in ViewBag.Categories)
-            {
-                <div class="form-check">
-                    @{
-                        bool isChecked = Model.CategoryId == category.CategoryId;
-                    }
-                    <input type="radio" class="form-check-input" id="@category.CategoryId" name="catId" value="@category.CategoryId" @(isChecked ? "checked" : "") /> @category.Name
-                </div>
-            }
+        <div class="col-md-6">
+            <h5>Categories:</h5>
+            <div class="p-3 border rounded bg-white">
+                @foreach (Category category in ViewBag.Categories)
+                {
+                    <div class="form-check">
+                        @{
+                            bool isChecked = Model.CategoryId == category.CategoryId;
+                        }
+                        <input type="radio" class="form-check-input" id="@category.CategoryId" name="catId" value="@category.CategoryId" @(isChecked ? "checked" : "") />
+                        <label class="form-check-label" for="@category.CategoryId">@category.Name</label>
+                    </div>
+                }
+            </div>
         </div>
-        <div class="col">
-            <h3>Types:</h3>
-            @foreach (Ingredient ingredient in ViewBag.Ingredients)
-            {
-                <div class="form-check">
-                    @{
-                        bool isChecked = Model.ProductIngredients != null && Model.ProductIngredients.Any(i => i.IngredientId == ingredient.IngredientId);
-                    }
-                    <input type="checkbox" class="form-check-input" id="@ingredient.IngredientId" name="ingredientIds" value="@ingredient.IngredientId"
-                    @(isChecked ? "checked" : "") />
-                    <label class="form-check-label" for="@ingredient.IngredientId">@ingredient.Name</label>
-                </div>
-            }
+        <div class="col-md-6">
+            <h5>Types:</h5>
+            <div class="p-3 border rounded bg-white">
+                @foreach (Ingredient ingredient in ViewBag.Ingredients)
+                {
+                    <div class="form-check">
+                        @{
+                            bool isChecked = Model.ProductIngredients != null && Model.ProductIngredients.Any(i => i.IngredientId == ingredient.IngredientId);
+                        }
+                        <input type="checkbox" class="form-check-input" id="@ingredient.IngredientId" name="ingredientIds" value="@ingredient.IngredientId" @(isChecked ? "checked" : "") />
+                        <label class="form-check-label" for="@ingredient.IngredientId">@ingredient.Name</label>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="ProductView" asp-controller="Admin" class="btn btn-outline-dark">Cancel</a>
+    <div class="d-flex justify-content-end mt-4">
+        <button type="submit" class="btn btn-primary me-2">Save</button>
+        <a asp-action="ProductView" asp-controller="Admin" class="btn btn-outline-dark">Cancel</a>
+    </div>
 </form>

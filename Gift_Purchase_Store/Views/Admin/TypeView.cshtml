@@ -1,32 +1,28 @@
 ﻿@model IEnumerable<Ingredient>
 
-    @{
-        ViewBag.Title = "List of  Types";
-    }
+@{
+    ViewBag.Title = "List of Types";
+}
 
-<h1>Types</h1>
-<a asp-action="TypeCreate">Create New Types</a>
+<h1 class="text-center mb-4" style="color: #6c757d;">List of Types</h1>
+<a asp-action="TypeCreate" class="btn btn-primary mb-3">Create New Types</a>
 
-<table class="table">
-    <thead>
+<table class="table table-striped table-bordered shadow-sm rounded">
+    <thead class="table">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th class="text-center">Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach(Ingredient i in Model)
+        @foreach (Ingredient i in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => i.Name)
-                </td>
-                <td>
-                    <a asp-action="TypeDetails" asp-route-id="@i.IngredientId">Details</a>
-                    <a asp-action="TypeEdit" asp-route-id="@i.IngredientId">Edit</a>
-                    <a asp-action="TypeDelete" asp-route-id="@i.IngredientId">Delete</a>
+                <td>@Html.DisplayFor(modelItem => i.Name)</td>
+                <td class="text-center">
+                    <a asp-action="TypeDetails" asp-route-id="@i.IngredientId" class="btn btn-info btn-sm me-1">Details</a>
+                    <a asp-action="TypeEdit" asp-route-id="@i.IngredientId" class="btn btn-warning btn-sm me-1">Edit</a>
+                    <a asp-action="TypeDelete" asp-route-id="@i.IngredientId" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
         }
